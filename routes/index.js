@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+const path = require('path');
 
 router.get('/', function (req, res, next) {
 	return res.render('index.ejs');
@@ -81,8 +82,11 @@ router.post('/login', function (req, res, next) {
 	});
 });
 
+// Methods to display directory
+
+
 router.get('/profile', function (req, res, next) {
-	console.log("profile");
+	
 	User.findOne({unique_id:req.session.userId},function(err,data){
 		console.log("data");
 		console.log(data);
@@ -90,7 +94,8 @@ router.get('/profile', function (req, res, next) {
 			res.redirect('/');
 		}else{
 			//console.log("found");
-			return res.render('data.ejs', {"name":data.username,"email":data.email});
+			//return res.render('data.ejs', {"name":data.username,"email":data.email});
+			return res.sendFile(path.join(process.cwd()+"/public/index.html"));
 		}
 	});
 });
@@ -140,5 +145,8 @@ router.post('/forgetpass', function (req, res, next) {
 	});
 	
 });
+
+
+
 
 module.exports = router;
